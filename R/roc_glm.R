@@ -95,7 +95,7 @@ rocGLMData = function (U, tset)
 #' @return Data.frame used to calculate ROC-GLM
 #' @author Stefan B., Daniel S.
 #' @export
-rocGLMFram = function (params_char, data, formula)
+rocGLMFrame = function (params_char, data, formula)
 {
   scores = predictStringGLM(params_char, data, formula)
   target = strsplit(ds_mod$formula, " ~ ")[[1]][1]
