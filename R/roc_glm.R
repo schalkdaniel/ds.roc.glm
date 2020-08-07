@@ -139,6 +139,8 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
 
   if (!is.null(w)) {
     eval(parse(text = "w = ", data, "[['", w, "']]"))
+  } else {
+    w = rep(1, length(y))
   }
 
   beta = unlist(lapply(strsplit(params_char, "xnx")[[1]], FUN = function (p) {
