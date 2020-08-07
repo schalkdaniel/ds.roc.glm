@@ -6,7 +6,7 @@
 #' @param formula The formula used to fit the model
 #' @return Prediction scores
 #' @author Stefan B., Daniel S.
-predictStringGLM = function (params_char, data, formula)
+predictStringGLM = function (params_char, data, formula, link = "logit")
 {
   if (missing(data))
     stop("Need name of dataset used to train 'ds_mod'")
@@ -25,7 +25,12 @@ predictStringGLM = function (params_char, data, formula)
   }))
 
   X = eval(parse(text = paste0("model.matrix(fm, data = ", data, ")")))
-  return (X %*% params)
+  lin_pred = X %*% params
+
+  if (link == "logit") out = 1 / (1 + exp(lin_pred))
+  if (link == "probit") out = pnorm(lin_pred)
+
+  return (out)
 }
 
 #'
@@ -88,7 +93,8 @@ rocGLMData = function (U, tset)
 
 #'
 #' @title Calculate data for ROC-GLM
-#' @description This function stores the data on the server used for the ROC-GLM#' @param params_char Character containing all the parameter
+#' @description This function stores the data on the server used for the ROC-GLM
+#' @param params_char Character containing all the parameter
 #' @param params_char Character containing all the parameter
 #' @param data Character containing the name of the dataset
 #' @param formula The formula used to fit the model
@@ -98,13 +104,14 @@ rocGLMData = function (U, tset)
 rocGLMFrame = function (params_char, data, formula)
 {
   scores = predictStringGLM(params_char, data, formula)
-  target = strsplit(ds_mod$formula, " ~ ")[[1]][1]
-  truth = eval(parse(text = paste0(data, "[[", target, "]]")))
+  target = strsplit(formula, " ~ ")[[1]][1]
+  truth = as.integer(eval(parse(text = paste0(data, "[['", target, "']]"))))
+  if (max(truth) == 2) truth = truth - 1
 
   tset = scores[truth == 1]
   pv = computePlacementValues(scores, truth, tset)
   U  = calcU(tset, pv)
-  roc_clm_data = rocGLMData(U, tset)
+  roc_glm_data = rocGLMData(U, tset)
 
   return (roc_glm_data)
 }
