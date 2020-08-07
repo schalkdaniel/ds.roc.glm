@@ -142,7 +142,7 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   } else {
     w = rep(1, length(y))
   }
-  if (params_char = "xxx") {
+  if (params_char == "xxx") {
     beta = rep(0, ncol(X))
   } else {
     beta = unlist(lapply(strsplit(params_char, "xnx")[[1]], FUN = function (p) {
