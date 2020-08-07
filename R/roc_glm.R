@@ -103,7 +103,7 @@ rocGLMData = function (U, tset)
 #' @export
 rocGLMFrame = function (params_char, data, formula)
 {
-  formula = as.character(formula)
+  formula = format(formula)
   scores = predictStringGLM(params_char, data, formula)
   target = strsplit(formula, " ~ ")[[1]][1]
   truth = as.integer(eval(parse(text = paste0(data, "[['", target, "']]"))))
