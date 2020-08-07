@@ -142,14 +142,17 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   } else {
     w = rep(1, length(y))
   }
+  if (params_char = "xxx") {
+    beta = rep(0, ncol(X))
+  } else {
+    beta = unlist(lapply(strsplit(params_char, "xnx")[[1]], FUN = function (p) {
+      sp = strsplit(p, "xex")
+      params = vapply(sp, FUN.VALUE = numeric(1L), function (s) as.numeric(s[2]))
+      names(params) = vapply(sp, FUN.VALUE = character(1L), function (s) s[1])
 
-  beta = unlist(lapply(strsplit(params_char, "xnx")[[1]], FUN = function (p) {
-    sp = strsplit(p, "xex")
-    params = vapply(sp, FUN.VALUE = numeric(1L), function (s) as.numeric(s[2]))
-    names(params) = vapply(sp, FUN.VALUE = character(1L), function (s) s[1])
-
-    return (params)
-  }))
+      return (params)
+    }))
+  }
 
   w_mat = diag(sqrt(w))
   lambda = calculateLambda(y, X, beta)
@@ -162,7 +165,7 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   XtX = t(X) %*% W %*% X
   Xy = t(X) %*% lambda
 
-  out = list(XtX = XtX, Xy = Xy, dev = probitDeviance(y, X, beta))
+  out = list(XtX = XtX, Xy = Xy, likelihood = probitLikelihood(y, X, beta))
   return (out)
 }
 
