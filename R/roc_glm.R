@@ -137,6 +137,9 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   eval(parse(text = paste0("y = as.integer(", data, "[['", target, "']])")))
   if (max(y) == 2) y = y - 1
 
+  # Flip labels:
+  y = abs(y - 1)
+
   if (!is.null(w)) {
     eval(parse(text = paste0("w = ", data, "[['", w, "']]")))
   } else {
