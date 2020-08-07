@@ -162,7 +162,7 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   XtX = t(X) %*% W %*% X
   Xy = t(X) %*% lambda
 
-  out = list(XtX = XtX, Xy = Xy)
+  out = list(XtX = XtX, Xy = Xy, dev = probitDeviance(y, X, beta))
   return (out)
 }
 
@@ -175,3 +175,17 @@ calculateLambda = function (y, X, beta)
   return ((dnorm(qeta) * q) / (pnorm(qeta)))
 }
 
+probitLikelihood = function (y, X, beta, w = NULL)
+{
+  eta = X %*% beta
+
+  if (is.null(w)) {
+    w = rep(1, times = nrow(X))
+  }
+  lh = pnorm(eta)^y * (1 - pnorm(eta))^(1 - y)
+  prod(lh^w)
+}
+probitDeviance = function (y, X, beta)
+{
+  -2 * log(probitLikelihood(y, X, beta))
+}
