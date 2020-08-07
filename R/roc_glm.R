@@ -103,17 +103,19 @@ rocGLMData = function (U, tset)
 #' @export
 rocGLMFrame = function (params_char, data, formula)
 {
-  scores = predictStringGLM(params_char, data, formula)
-  target = strsplit(formula, " ~ ")[[1]][1]
-  truth = as.integer(eval(parse(text = paste0(data, "[['", target, "']]"))))
-  if (max(truth) == 2) truth = truth - 1
+  return (rnorm(10))
+  #scores = predictStringGLM(params_char, data, formula)
+  #target = strsplit(formula, " ~ ")[[1]][1]
+  #truth = as.integer(eval(parse(text = paste0(data, "[['", target, "']]"))))
+  #if (max(truth) == 2) truth = truth - 1
 
-  tset = scores[truth == 1]
-  pv = computePlacementValues(scores, truth, tset)
-  U  = calcU(tset, pv)
-  roc_glm_data = rocGLMData(U, tset)
+  #tset = scores[truth == 1]
+  #pv = computePlacementValues(scores, truth, tset)
+  #U  = calcU(tset, pv)
+  #roc_glm_data = rocGLMData(U, tset)
 
-  return (roc_glm_data)
+  #return (roc_glm_data)
 }
+
 
 
