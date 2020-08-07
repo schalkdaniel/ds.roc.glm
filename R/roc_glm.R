@@ -16,8 +16,8 @@ predictStringGLM = function (params_char, data, formula, link = "logit")
 
   fm = as.formula(formula)
 
-  params = unlist(lapply(strsplit(params_char, "<n>")[[1]], FUN = function (p) {
-    sp = strsplit(p, "<=>")
+  params = unlist(lapply(strsplit(params_char, "xnx")[[1]], FUN = function (p) {
+    sp = strsplit(p, "xex")
     params = vapply(sp, FUN.VALUE = numeric(1L), function (s) as.numeric(s[2]))
     names(params) = vapply(sp, FUN.VALUE = character(1L), function (s) s[1])
 
@@ -103,18 +103,18 @@ rocGLMData = function (U, tset)
 #' @export
 rocGLMFrame = function (params_char, data, formula)
 {
-  return (rnorm(10))
-  #scores = predictStringGLM(params_char, data, formula)
-  #target = strsplit(formula, " ~ ")[[1]][1]
-  #truth = as.integer(eval(parse(text = paste0(data, "[['", target, "']]"))))
-  #if (max(truth) == 2) truth = truth - 1
+  formula = as.character(formula)
+  scores = predictStringGLM(params_char, data, formula)
+  target = strsplit(formula, " ~ ")[[1]][1]
+  truth = as.integer(eval(parse(text = paste0(data, "[['", target, "']]"))))
+  if (max(truth) == 2) truth = truth - 1
 
-  #tset = scores[truth == 1]
-  #pv = computePlacementValues(scores, truth, tset)
-  #U  = calcU(tset, pv)
-  #roc_glm_data = rocGLMData(U, tset)
+  tset = scores[truth == 1]
+  pv = computePlacementValues(scores, truth, tset)
+  U  = calcU(tset, pv)
+  roc_glm_data = rocGLMData(U, tset)
 
-  #return (roc_glm_data)
+  return (roc_glm_data)
 }
 
 
