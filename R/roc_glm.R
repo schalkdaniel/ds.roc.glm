@@ -118,4 +118,59 @@ rocGLMFrame = function (params_char, data, formula)
 }
 
 
+#'
+#' @title Calculate Parts for Fisher Scoring
+#' @description This function calculates the parts required to conduct an update for the Fisher scoring for probit regression
+#' @param y Response vector (binary)
+#' @param X Data matrix
+#' @param formula Formula used for the probit regression
+#' @param data Data as string
+#' @param w Weights
+#' @param beta Current estimator
+#' @return List with XtX and Xy
+#' @author Stefan B., Daniel S.
+#' @export
+calcDistrParts = function (y, X, formula, data,  w = NULL, params_char)
+{
+  fm = format(formula)
+  target = strsplit(fm, " ~ ")[[1]][1]
+
+  eval(parse(text = paste0("X = model.matrix(", fm, ", data = ", data, ")")))
+  eval(parse(text = paste0("y = ", data, "[['", target, "']]")))
+
+  if (!is.null(w)) {
+    eval(parse(text = "w = ", data, "[['", w, "']]"))
+  }
+
+  beta = unlist(lapply(strsplit(params_char, "xnx")[[1]], FUN = function (p) {
+    sp = strsplit(p, "xex")
+    params = vapply(sp, FUN.VALUE = numeric(1L), function (s) as.numeric(s[2]))
+    names(params) = vapply(sp, FUN.VALUE = character(1L), function (s) s[1])
+
+    return (params)
+  }))
+
+  w_mat = diag(sqrt(w))
+  lambda = calculateLambda(y, X, beta)
+  W = diag(as.vector(lambda * (X %*% beta + lambda)))
+
+  if (! is.null(w)) {
+    X = w_mat %*% X
+    lambda = w_mat %*% lambda
+  }
+  XtX = t(X) %*% W %*% X
+  Xy = t(X) %*% lambda
+
+  out = list(XtX = XtX, Xy = Xy)
+  return (out)
+}
+
+calculateLambda = function (y, X, beta)
+{
+  eta = X %*% beta
+  q = 2 * y - 1
+  qeta = q * eta
+
+  return ((dnorm(qeta) * q) / (pnorm(qeta)))
+}
 
