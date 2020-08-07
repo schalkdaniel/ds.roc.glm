@@ -17,7 +17,7 @@ rocGLMFrame(params_char, data, formula)
 Data.frame used to calculate ROC-GLM
 }
 \description{
-This function stores the data on the server used for the ROC-GLM#' @param params_char Character containing all the parameter
+This function stores the data on the server used for the ROC-GLM
 }
 \author{
 Stefan B., Daniel S.

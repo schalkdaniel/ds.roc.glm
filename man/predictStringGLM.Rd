@@ -4,7 +4,7 @@
 \alias{predictStringGLM}
 \title{Predict with given DataSHIELD GLM}
 \usage{
-predictStringGLM(params_char, data, formula)
+predictStringGLM(params_char, data, formula, link = "logit")
 }
 \arguments{
 \item{params_char}{Character containing all the parameter}
