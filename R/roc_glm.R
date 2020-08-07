@@ -138,7 +138,7 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   if (max(y) == 2) y = y - 1
 
   # Flip labels:
-  y = abs(y - 1)
+  #y = abs(y - 1)
 
   if (!is.null(w)) {
     eval(parse(text = paste0("w = ", data, "[['", w, "']]")))
