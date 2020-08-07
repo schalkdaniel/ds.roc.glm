@@ -121,8 +121,6 @@ rocGLMFrame = function (params_char, data, formula)
 #'
 #' @title Calculate Parts for Fisher Scoring
 #' @description This function calculates the parts required to conduct an update for the Fisher scoring for probit regression
-#' @param y Response vector (binary)
-#' @param X Data matrix
 #' @param formula Formula used for the probit regression
 #' @param data Data as string
 #' @param w Weights
@@ -130,13 +128,14 @@ rocGLMFrame = function (params_char, data, formula)
 #' @return List with XtX and Xy
 #' @author Stefan B., Daniel S.
 #' @export
-calcDistrParts = function (y, X, formula, data,  w = NULL, params_char)
+calcDistrParts = function (formula, data,  w = NULL, params_char)
 {
   fm = format(formula)
   target = strsplit(fm, " ~ ")[[1]][1]
 
   eval(parse(text = paste0("X = model.matrix(", fm, ", data = ", data, ")")))
-  eval(parse(text = paste0("y = ", data, "[['", target, "']]")))
+  eval(parse(text = paste0("y = as.integer(", data, "[['", target, "']])")))
+  if (max(y) == 2) y = y - 1
 
   if (!is.null(w)) {
     eval(parse(text = "w = ", data, "[['", w, "']]"))
