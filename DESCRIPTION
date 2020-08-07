@@ -6,6 +6,6 @@ Author: Daniel Schalk, Stefan Buchka
 Version: 0.0.1
 License: GPL-3
 Description: DataSHIELD ROC-GLM
-AggregateMethods:
+AggregateMethods:rocGLMFrame
 Options: datashield.privacyLevel=5
 RoxygenNote: 7.1.0
