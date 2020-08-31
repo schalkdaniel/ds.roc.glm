@@ -8,6 +8,10 @@ Install the package on the server where DataSHIELD is running via:
 devtools::install.github("schalkdaniel/ds.roc.glm")
 ```
 
+## Export DataSHIELD Aggregate Methods
+
+In order to use the functionality, add the package in the OPAL interface and click `Publish Methods`.
+
 ## Client Functions
 
 The client functions are in a saparated file `R/client_functions.R`. Since these functions are exported in another package to make them available more easily, it is required to source this file everytime you want to use the ROC-GLM:
