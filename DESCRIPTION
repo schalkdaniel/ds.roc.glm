@@ -1,7 +1,7 @@
 Package: ds.roc.glm
 Type: Package
 Title: ROC-GLM Implementation for DataSHIELD
-Maintainer: Daniel Schalk <test@test.de>
+Maintainer: Daniel Schalk <daniel.schalk@stat.uni-muenchen.de>
 Author: Daniel Schalk, Stefan Buchka
 Version: 0.0.1
 License: GPL-3
