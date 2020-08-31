@@ -171,7 +171,16 @@ calcDistrParts = function (formula, data,  w = NULL, params_char)
   out = list(XtX = XtX, Xy = Xy, likelihood = probitLikelihood(y, X, beta))
   return (out)
 }
-
+                         
+#'
+#' @title Transform Response for Probit Fisher-Scoring
+#' @description This function transform the original 0-1-response y  to a new reponse 
+#'   "lambda" that is used as respone for the fisher scoring. 
+#' @param y Original 0-1-response
+#' @param X Design matrix
+#' @param beta Estimated parameter vector
+#' @return Numeric vector of new response
+#' @author Stefan B., Daniel S.
 calculateLambda = function (y, X, beta)
 {
   eta = X %*% beta
@@ -181,6 +190,15 @@ calculateLambda = function (y, X, beta)
   return ((dnorm(qeta) * q) / (pnorm(qeta)))
 }
 
+#'
+#' @title Calculate Likelihood of Probit Model
+#' @description This function calculates the likelihood used in a probit regression (Bernoulli distribution + probit link).
+#' @param y Original 0-1-response
+#' @param X Design matrix
+#' @param beta Estimated parameter vector
+#' @param x Weight vector
+#' @return Numeric value containing the likelihood
+#' @author Stefan B., Daniel S.
 probitLikelihood = function (y, X, beta, w = NULL)
 {
   eta = X %*% beta
@@ -191,6 +209,15 @@ probitLikelihood = function (y, X, beta, w = NULL)
   lh = pnorm(eta)^y * (1 - pnorm(eta))^(1 - y)
   prod(lh^w)
 }
+                         
+#'
+#' @title Calculate Deviance of Probit Model
+#' @description This function calculates the deviance used in a probit regression.
+#' @param y Original 0-1-response
+#' @param X Design matrix
+#' @param beta Estimated parameter vector
+#' @return Numeric value containing the deviance
+#' @author Stefan B., Daniel S.                         
 probitDeviance = function (y, X, beta)
 {
   -2 * log(probitLikelihood(y, X, beta))
